@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Cargar Certificado{% endblock %}
+
+{% block content %}
+    <section class="bienvenida-box" style="max-width: 500px; margin: auto;">
+        <h1 class="bienvenida-titulo">Cargar Certificado</h1>
+        <form method="POST" enctype="multipart/form-data" class="form-cert">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input type="date" name="fecha" id="fecha">
+            </div>
+            <div class="form-group">
+                <label for="institucion">Institución</label>
+                <input type="text" name="institucion" id="institucion">
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea name="descripcion" id="descripcion" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="imagen">Imagen (preview)</label>
+                <input type="file" name="imagen" id="imagen" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="pdf">Archivo PDF</label>
+                <input type="file" name="pdf" id="pdf" accept="application/pdf" required>
+            </div>
+            <button type="submit" class="cert-btn">Cargar</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="flash-{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </section>
+{% endblock %}

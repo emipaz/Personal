@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Proyecto de App{% endblock %}
+
+{% block content %}
+    <section class="bienvenida-box">
+        <h1 class="bienvenida-titulo">Proyecto de App</h1>
+        <p class="bienvenida-desc">Aquí puedes interactuar con la app embebida de AppSheet.</p>
+        <div style="margin-bottom: 2em;">
+            <iframe 
+                src="https://www.appsheet.com/start/47587471-e329-4816-8025-c6c294f733e6" 
+                width="100%" 
+                height="500" 
+                style="border:1px solid #ccc; border-radius:8px;"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <!-- Aquí puedes agregar el Google Form debajo -->
+    </section>
+{% endblock %}

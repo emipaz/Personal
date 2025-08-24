@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Galería de Certificados{% endblock %}
+
+{% block content %}
+    <h1 class="bienvenida-titulo">Galería de Certificados</h1>
+    <div class="galeria-grid">
+        {% for cert in certificados.items %}
+        <div class="cert-card">
+            <img src="{{ cert.imagen_url }}" alt="Preview" class="cert-img">
+            <div class="cert-info">
+                <h2>{{ cert.nombre }}</h2>
+                <p><strong>Fecha:</strong> {{ cert.fecha.strftime('%d/%m/%Y') if cert.fecha else '' }}</p>
+                <p><strong>Institución:</strong> {{ cert.institucion }}</p>
+                <p>{{ cert.descripcion }}</p>
+                <a href="{{ cert.pdf_url }}" target="_blank" class="cert-btn">Ver PDF</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="paginacion">
+        {% if certificados.has_prev %}
+            <a href="{{ url_for('main.galeria', page=certificados.prev_num) }}">Anterior</a>
+        {% endif %}
+        <span>Página {{ certificados.page }} de {{ certificados.pages }}</span>
+        {% if certificados.has_next %}
+            <a href="{{ url_for('main.galeria', page=certificados.next_num) }}">Siguiente</a>
+        {% endif %}
+    </div>
+{% endblock %}

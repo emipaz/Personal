@@ -1,0 +1,11 @@
+flask
+flask_sqlalchemy
+sqlalchemy
+requests
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+openai
+flask-login
+flask-migrate

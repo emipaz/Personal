@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.menu {
+    width: 200px;
+    background: #f4f4f4;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+}
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+.menu li {
+    padding: 15px 20px;
+}
+.menu li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+.menu li a:hover {
+    background: #ddd;
+}
+.content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+.bienvenida-box {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 32px 24px;
+}
+.bienvenida-titulo {
+    font-size: 2.2em;
+    color: #222e3c;
+    margin-bottom: 0.5em;
+}
+.bienvenida-desc {
+    font-size: 1.2em;
+    color: #31415a;
+    margin-bottom: 1.5em;
+}
+.bienvenida-lista {
+    font-size: 1.1em;
+    color: #31415a;
+    list-style: none;
+    padding-left: 0;
+}
+.bienvenida-lista li {
+    margin-bottom: 0.5em;
+}

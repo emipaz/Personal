@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>App Flask</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #222e3c;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 220px;
+            background: #222e3c;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            padding-top: 30px;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+        }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 24px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        .sidebar a:hover {
+            background: #31415a;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 40px 32px;
+            flex: 1;
+        }
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 60px;
+                padding-top: 10px;
+            }
+            .sidebar a {
+                font-size: 0.9em;
+                padding: 12px 8px;
+                gap: 0;
+                justify-content: center;
+            }
+            .content {
+                margin-left: 60px;
+                padding: 20px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <a href="/">🏠 <span class="nav-text">Inicio</span></a>
+            <a href="/miapp">📱 <span class="nav-text">Proyecto de App</span></a>
+            <a href="/galeria">🖼️ <span class="nav-text">Galería de Certificados</span></a>
+            <a href="/bot">🤖 <span class="nav-text">Bot Inteligente</span></a>
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #31415a;">
+    <a href="/admin/cargar">🔒 <span class="nav-text">Cargar Certificado</span></a>
+        </nav>
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>
