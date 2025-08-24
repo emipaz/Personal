@@ -58,3 +58,74 @@ body {
 .bienvenida-lista li {
     margin-bottom: 0.5em;
 }
+
+.galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+    margin-top: 32px;
+}
+.cert-card {
+    background: #3c556f;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s;
+}
+.cert-card:hover {
+    box-shadow: 0 4px 24px rgba(49,65,90,0.12);
+}
+.cert-img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 6px rgba(49,65,90,0.10);
+}
+.cert-info h2 {
+    font-size: 1.15em;
+    color: hsl(211, 24%, 83%);
+    margin: 0 0 6px 0;
+}
+.cert-info p {
+    font-size: 0.98em;
+    color: hsl(211, 24%, 83%);
+    margin: 2px 0;
+}
+.cert-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 18px;
+    background: #222e3c;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.98em;
+    transition: background 0.2s;
+}
+.cert-btn:hover {
+    background: #7d9dd1;
+}
+.paginacion {
+    margin: 32px auto 0 auto;
+    text-align: center;
+    color: #ebedf1;
+}
+.paginacion a {
+    color: #e3e7ed;
+    background: #31415a;
+    border-radius: 6px;
+    padding: 6px 14px;
+    margin: 0 6px;
+    text-decoration: none;
+    box-shadow: 0 1px 6px rgba(49,65,90,0.10);
+    transition: background 0.2s;
+}
+.paginacion a:hover {
+    background: #31415a;
+    color: #fff;
+}
