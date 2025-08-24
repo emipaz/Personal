@@ -59,6 +59,33 @@ body {
     margin-bottom: 0.5em;
 }
 
+.sidebar-social {
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-bottom: 24px;
+}
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.2s;
+}
+.social-link:hover {
+    background: #31415a;
+}
+.social-link svg {
+    display: block;
+}
+}
+
 .galeria-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
