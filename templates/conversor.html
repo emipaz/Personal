@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="conversor-box">
+    <h2>Conversor de Divisas</h2>
+    <form method="post" class="conversor-form">
+        <label>¿Qué deseas convertir?</label>
+        <select name="sentido" required>
+            <option value="ars_a_moneda" {% if sentido == 'ars_a_moneda' %}selected{% endif %}>Compra</option>
+            <option value="moneda_a_ars" {% if sentido == 'moneda_a_ars' %}selected{% endif %}>Venta</option>
+        </select>
+        <label>Monto:</label>
+        <input type="text" name="monto" required pattern="^(?!0(\.0{1,2})?$)\d+(\.\d{1,2})?$" title="Ingrese un número mayor a 0 con hasta 2 decimales" value="{{ request.form.monto or '' }}">
+        <label>Moneda:</label>
+        <select name="moneda">
+            {% for key, nombre in monedas.items() %}
+            <option value="{{ key }}" {% if request.form.moneda == key %}selected{% endif %}>{{ nombre }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Convertir</button>
+    </form>
+    {% if resultado is not none and tasa_compra and tasa_venta %}
+    <div class="conversor-resultado">
+        <p>Compra: {{ tasa_compra }} ARS | Venta: {{ tasa_venta }} ARS</p>
+        {% if sentido == 'ars_a_moneda' %}
+            <p>{{ request.form.monto }} ARS = <strong>{{ resultado|round(2) }} {{ moneda_seleccionada }}</strong> (usando precio de venta)</p>
+        {% elif sentido == 'moneda_a_ars' %}
+            <p>{{ request.form.monto }} {{ moneda_seleccionada }} = <strong>{{ resultado|round(2) }} ARS</strong> (usando precio de compra)</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
