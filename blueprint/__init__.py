@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 import requests
 from functools import lru_cache
 from datetime import datetime, timedelta
-import pytz
+from pytz import timezone
 
 
 @lru_cache(maxsize=32)
@@ -29,15 +29,14 @@ def obtener_cotizacion_con_cache(moneda):
     cotizacion = obtener_cotizacion(moneda)
     if cotizacion and 'fechaActualizacion' in cotizacion:
         # Convertir la fecha a Buenos Aires
-        fecha_api_utc = datetime.strptime(cotizacion['fechaActualizacion'], '%Y-%m-%dT%H:%M:%S.%fZ')
-
-        
-        # ahora_bsas = datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
-        zona_horaria_buenos_aires = pytz.timezone('America/Argentina/Buenos_Aires')
-        fecha_api_bsas = datetime.fromisoformat(cotizacion.get('fechaActualizacion', '')).astimezone(zona_horaria_buenos_aires)
-        ahora_buenos_aires = datetime.now(zona_horaria_buenos_aires)
+        fecha_str = cotizacion['fechaActualizacion']
+        # Parsear correctamente la fecha con Z
+        fecha_api_utc = datetime.strptime(fecha_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+        fecha_api_utc = fecha_api_utc.replace(tzinfo=timezone('UTC'))
+        fecha_api_bsas = fecha_api_utc.astimezone(timezone('America/Argentina/Buenos_Aires'))
+        ahora_bsas = datetime.now(timezone('America/Argentina/Buenos_Aires'))
         # Si han pasado más de 1 hora, limpiar el cache y volver a llamar
-        if (ahora_buenos_aires - fecha_api_bsas) > timedelta(hours=1):
+        if (ahora_bsas - fecha_api_bsas) > timedelta(hours=1):
             obtener_cotizacion.cache_clear()
             cotizacion = obtener_cotizacion(moneda)
     return cotizacion
