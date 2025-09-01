@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .recetas-box {
+        max-width: 700px;
+        margin: 40px auto;
+        background: #31415a;
+        border-radius: 14px;
+        box-shadow: 0 2px 16px rgba(49,65,90,0.13);
+        padding: 32px 28px;
+        color: #fff;
+    }
+    .recetas-box h1 {
+        font-size: 2em;
+        margin-bottom: 18px;
+        color: #e3e7ed;
+        text-align: center;
+    }
+    .recetas-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #e3e7ed;
+    }
+    .recetas-form input {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 18px;
+        border: none;
+        border-radius: 7px;
+        background: #222e3c;
+        color: #fff;
+        font-size: 1em;
+    }
+    .recetas-form button {
+        width: 100%;
+        padding: 12px;
+        background: #7d9dd1;
+        color: #222e3c;
+        border: none;
+        border-radius: 7px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .recetas-form button:hover {
+        background: #e3e7ed;
+        color: #31415a;
+    }
+    .recetas-alerta {
+        background: #ffe066;
+        color: #222e3c;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 18px;
+        text-align: center;
+        font-weight: 500;
+        display: none;
+    }
+    .recetas-lista {
+        margin-top: 32px;
+    }
+    .recetas-lista h2 {
+        color: #ffe066;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .recetas-lista ul {
+        font-size: 1.15em;
+        padding-left: 0;
+        color: #fff;
+        list-style: disc inside;
+        text-align: left;
+    }
+    .recetas-lista li {
+        margin-bottom: 8px;
+    }
+    .recetas-lista a {
+        color: #ffe066;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .recetas-lista a:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="recetas-box">
+    <h1>Recetas con IA 🍽️</h1>
+    <div id="recetas-alerta" class="recetas-alerta">
+        Generando receta... Esto puede tardar hasta 5 minutos. Por favor espera.
+    </div>
+    <form id="recetas-form" class="recetas-form">
+        <label for="pregunta">Nueva receta:</label>
+        <input type="text" id="pregunta" name="pregunta" placeholder="¿Qué receta quieres crear?" required>
+        <button type="submit">Crear receta</button>
+    </form>
+
+    <div class="recetas-lista">
+        <h2>Recetas generadas</h2>
+        <ul id="lista-recetas">
+            {% for receta in recetas %}
+                <li>
+                    <a href="{{ url_for('main.ver_receta', nombre=receta) }}" target="_blank">{{ receta.replace('_', ' ').replace('.html', '').capitalize() }}</a>
+                </li>
+            {% else %}
+                <li>No hay recetas generadas aún.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+document.getElementById('recetas-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var alerta = document.getElementById('recetas-alerta');
+    alerta.style.display = 'block';
+
+    var pregunta = document.getElementById('pregunta').value;
+    var formData = new FormData();
+    formData.append('pregunta', pregunta);
+
+    fetch('{{ url_for("main.crear_receta") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error al crear la receta');
+        return response.json();
+    })
+    .then(data => {
+        alerta.style.display = 'none';
+        document.getElementById('pregunta').value = '';
+        actualizarListaRecetas();
+    })
+    .catch(error => {
+        alerta.innerText = 'Ocurrió un error al crear la receta.';
+        setTimeout(() => { alerta.style.display = 'none'; }, 3000);
+    });
+});
+
+function actualizarListaRecetas() {
+    fetch('{{ url_for("main.recetas") }}?ajax=1')
+    .then(response => response.json())
+    .then(data => {
+        var lista = document.getElementById('lista-recetas');
+        lista.innerHTML = '';
+        if (data.recetas.length === 0) {
+            lista.innerHTML = '<li>No hay recetas generadas aún.</li>';
+        } else {
+            data.recetas.forEach(function(receta) {
+                var nombre = receta.replace('_', ' ').replace('.html', '').capitalize();
+                var li = document.createElement('li');
+                var a = document.createElement('a');
+                a.href = '/recetas/' + receta;
+                a.target = '_blank';
+                a.innerText = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+                li.appendChild(a);
+                lista.appendChild(li);
+            });
+        }
+    });
+}
+
+// Helper para capitalizar
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+</script>
+
+
+{% endblock %}

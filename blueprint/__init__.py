@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, session
+from flask import jsonify
 from models import Certificado, db
 import os
 from datetime import date
@@ -7,6 +8,7 @@ import requests
 from functools import lru_cache
 from datetime import datetime, timedelta
 from pytz import timezone
+from recetas.core import crear_receta_con_ia
 
 
 @lru_cache(maxsize=32)
@@ -158,3 +160,30 @@ def conversor():
                            tasa_venta=tasa_venta,
                            moneda_seleccionada=moneda_seleccionada,
                            sentido=sentido)
+
+
+@bp.route('/recetas', methods=['GET', 'POST'])
+def recetas():
+    import os
+    recetas_dir = os.path.join(current_app.root_path, 'templates', 'recetas')
+    recetas = [f for f in os.listdir(recetas_dir) if f.endswith('.html')]
+    
+    recetas.sort()
+    if request.args.get('ajax') == '1':
+        return jsonify({'recetas': recetas})
+    
+    
+    return render_template('recetas.html', recetas=recetas)
+
+@bp.route('/recetas/crear', methods=['POST'])
+def crear_receta():
+    pregunta = request.form['pregunta']
+    ruta_html = crear_receta_con_ia(pregunta)
+    flash('Receta creada correctamente.')
+    return jsonify({'ok': True})
+    # return redirect(url_for('main.recetas'))
+
+@bp.route('/recetas/<nombre>')
+def ver_receta(nombre):
+    return render_template(f'recetas/{nombre}')
+
